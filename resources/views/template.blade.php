@@ -27,7 +27,6 @@
         }
 
 
-
         h1, h2, h3, h4, h5, h6 {
             font-family: 'Alata', sans-serif;
             font-size: 25%;
@@ -49,12 +48,8 @@
             bottom: 0;
             left: 0;
             z-index: 999; /* Assure que le footer est au-dessus du contenu */
-            transition: transform 0.3s ease;
         }
 
-        .footer-hidden {
-            transform: translateY(100%);
-        }
 
         nav {
             width: 100%;
@@ -74,6 +69,7 @@
             max-width: 600px;
             margin: 0 auto;
             padding: 20px;
+            margin-bottom: 60px; /* Ajout de marge en bas */
         }
 
         .message-input-generer-lien {
@@ -114,7 +110,8 @@
     @viteReactRefresh
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
-<body class="flex flex-col min-h-screen">(
+<body class="flex flex-col min-h-screen">
+
 <div class="min-h-full">
     <nav class="head bg-gray-800">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -144,21 +141,6 @@
     Copyright © 2024 Atixit – SAS au capital de 7 000 € – 828 174 169 R.C.S. CRETEIL – Code APE 6202A – <a href="https://atixit.fr/" class="text-white">Voir notre site</a>
 </footer>
 
-<script>let lastScrollTop = 0;
-
-    window.addEventListener("scroll", function() {
-        let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-
-        if (currentScroll > lastScrollTop) {
-            // Scroll vers le bas
-            document.querySelector(".footer").classList.add("footer-hidden");
-        } else {
-            // Scroll vers le haut
-            document.querySelector(".footer").classList.remove("footer-hidden");
-        }
-        lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
-    }, false);
-</script>
 </body>
 </html>
 
