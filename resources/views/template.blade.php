@@ -8,6 +8,7 @@
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.1.1/flowbite.min.css" rel="stylesheet" />
+    <link rel="shortcut icon" type="image/x-icon" href="Favicon Atixit.png">
 
     <style>
 
