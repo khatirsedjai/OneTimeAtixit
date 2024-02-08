@@ -28,8 +28,8 @@
                         <input type="text" id="generated-link" value="{{ url('/link/' . $token) }}" readonly>
                         </label>
                         <div class="flex mt-2">
-                            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2" onclick="copyLink()">Copier</button>
                             <div class="flex mt-2">
+                            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2" onclick="copyLink()">Copier le lien</button>
                                 <form method="POST" action="{{ route('regenerateLink') }}">
                                     @csrf
                                     <input type="hidden" name="token" value="{{ $token }}">

@@ -23,10 +23,10 @@
                 </div>
                 <form method="post" action="{{ route('generateLink') }}">
                     @csrf
-                    <label for="message" class="text-lg font-semibold-generer-lien">Saisir votre message :</label>
-                    <br> <br>
+                    <label for="message" class="text-lg font-semibold-generer-lien"> <u>Saisir votre message :</u> </label>
+                    <br>
                     <textarea id="message" name="message" class="message-input-generer-lien w-full" placeholder="Entrez votre message ici..." required></textarea>
-                    <button type="submit" class="submit-button-generer-lien">Valider</button>
+                    <button type="submit" class="submit-button-generer-lien bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">Valider</button>
                 </form>
             </div>
         </div>
