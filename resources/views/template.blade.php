@@ -21,25 +21,40 @@
         body {
             font-family: 'Raleway', sans-serif;
             font-size: 100%;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Occupe au moins toute la hauteur de la fenêtre */
         }
+
+
 
         h1, h2, h3, h4, h5, h6 {
             font-family: 'Alata', sans-serif;
             font-size: 25%;
         }
 
-        /* Couleur unique pour le pied de page */
-        footer {
+        label_t{
+            font-family: 'Alata', sans-serif;
+            font-size: 25%;
+        }
+
+        .footer {
             background: linear-gradient(to right, #52b4e6, #AB6FAE);
             color: white;
             text-align: center;
             padding: 1% 2%;
             font-size: 16px;
-            position: absolute;
-            bottom: 0;
             width: 100%;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            z-index: 999; /* Assure que le footer est au-dessus du contenu */
+            transition: transform 0.3s ease;
         }
 
+        .footer-hidden {
+            transform: translateY(100%);
+        }
 
         nav {
             width: 100%;
@@ -69,6 +84,14 @@
             resize: none;
         }
 
+        .message-input-generer-mdp {
+            width: 100%;
+            height: 50%; /* La taille du champs */
+            padding: 10px;
+            margin-bottom: 10px;
+            resize: none;
+        }
+
         .submit-button-generer-lien {
             display: block;
             margin-left: auto;
@@ -87,12 +110,11 @@
 
 
 
-<!-- Scripts -->
-@viteReactRefresh
-@vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    <!-- Scripts -->
+    @viteReactRefresh
+    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
-<body class="h-full">
-
+<body class="flex flex-col min-h-screen">(
 <div class="min-h-full">
     <nav class="head bg-gray-800">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -117,9 +139,26 @@
     </main>
 </div>
 
-<footer>
-    Copyright © 2022 Atixit – SAS au capital de 7 000 € – 828 174 169 R.C.S. CRETEIL – Code APE 6202A - Mentions légales - Plan du site
+
+<footer class="footer">
+    Copyright © 2024 Atixit – SAS au capital de 7 000 € – 828 174 169 R.C.S. CRETEIL – Code APE 6202A – <a href="https://atixit.fr/" class="text-white">Voir notre site</a>
 </footer>
 
+<script>let lastScrollTop = 0;
+
+    window.addEventListener("scroll", function() {
+        let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+
+        if (currentScroll > lastScrollTop) {
+            // Scroll vers le bas
+            document.querySelector(".footer").classList.add("footer-hidden");
+        } else {
+            // Scroll vers le haut
+            document.querySelector(".footer").classList.remove("footer-hidden");
+        }
+        lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+    }, false);
+</script>
 </body>
 </html>
+

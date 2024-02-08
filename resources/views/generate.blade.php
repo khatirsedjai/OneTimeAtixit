@@ -23,7 +23,7 @@
                 </div>
                 <div class="flex justify-between mb-8 items-start">
                     <div class="flex flex-col">
-                        <label for="message" class="text-lg font-semibold-generer-lien"><u>Votre lien généré :</u>
+                        <label for="message" class="label_t text-lg font-semibold-generer-lien"><u>Votre lien généré :</u>
                         <br>
                         <input type="text" id="generated-link" value="{{ url('/link/' . $token) }}" readonly>
                         </label>
