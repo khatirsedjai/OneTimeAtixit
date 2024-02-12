@@ -20,8 +20,41 @@ class MessageController extends Controller
 
     public function generateLink(Request $request)
     {
+        // Nettoyer les messages et les tokens générés en cas de rafraîchissement
+        $this->cleanGeneratedMessage();
+
+        // Vérifier si la page generate a été visitée après la génération du lien
+        if (Session::has('generate_visited')) {
+            // Supprimer l'indicateur de la session
+            Session::forget('generate_visited');
+            // Rediriger l'utilisateur vers la page create
+            return redirect()->route('create');
+        }
+
+        // Vérifier si la page generate a été visitée après la génération du lien
+        if (Session::has('generate_visited')) {
+            // Supprimer l'indicateur de la session
+            Session::forget('generate_visited');
+            // Rediriger l'utilisateur vers la page create
+            return redirect()->route('create');
+        }
+
         $message = $request->input('message');
-        $token = Str::random(10);
+
+        // Vérifier d'abord s'il y a déjà un message avec ce token dans la base de données
+        $existingMessage = Message::where('token', Session::get('generated_token'))->first();
+
+        // Si un message avec ce token existe déjà, utiliser ce token existant
+        if ($existingMessage) {
+            $token = $existingMessage->token;
+            Session::put('generate_visited', true);
+        } else {
+            // Sinon, générer un nouveau token
+            $token = Str::random(10);
+            // Stocker le token en session
+            Session::put('generated_token', $token);
+            Session::put('generate_visited', true);
+        }
 
         $newMessage = Message::create([
             'content' => $message,
@@ -29,6 +62,16 @@ class MessageController extends Controller
         ]);
 
         return view('generate', ['token' => $token, 'message' => $newMessage]);
+    }
+
+    public function cleanGeneratedMessage()
+    {
+        if (Session::has('generated_token')) {
+            // Supprimer le message correspondant dans la base de données
+            Message::where('token', Session::get('generated_token'))->delete();
+            // Supprimer le token de session
+            Session::forget('generated_token');
+        }
     }
 
 
