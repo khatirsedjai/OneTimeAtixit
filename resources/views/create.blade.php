@@ -44,6 +44,10 @@
         </div>
     </div>
 
+    <footer class="footer">
+        Copyright © 2024 Atixit – SAS au capital de 7 000 € – 828 174 169 R.C.S. CRETEIL – Code APE 6202A – <a href="https://atixit.fr/" class="text-white">Voir notre site</a>
+    </footer>
+
     <script>
         document.getElementById('generatePasswordBtn').addEventListener('click', function() {
             fetch('https://www.dinopass.com/password/simple')
