@@ -118,6 +118,7 @@ class MessageController extends Controller
         }
     }
 
+
     public function regenerateLink()
     {
         // Récupérer le token à partir de la requête

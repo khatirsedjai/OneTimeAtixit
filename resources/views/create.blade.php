@@ -8,8 +8,8 @@
                 <div class="flex justify-between mb-8 items-start">
                     <div class="w-full pr-10">
                         <h2 class="text-lg font-semibold mb-2">Description</h2>
-                        <p class="text-sm text-gray-600">Si vous devez envoyer un mot de passe ou toute autre forme d'informations simples mais sensibles à quelqu'un, vous ne pouvez pas l'envoyer par messagerie instantanée ou par courrier électronique. Ces méthodes ne sont pas sécurisées car toute personne ayant peu de connaissances peut intercepter ces informations lors de leur transmission. En utilisant OneTimeAtixit comme « intermédiaire », vous pouvez transférer ces données en toute sécurité à votre destinataire.</p>
-                    </div>
+
+                        <p class="text-sm text-gray-600">Si vous devez envoyer un mot de passe ou toute autre forme d'informations simples mais sensibles à quelqu'un, vous ne pouvez pas l'envoyer par messagerie instantanée ou par courrier électronique. Ces méthodes ne sont pas sécurisées car toute personne ayant peu de connaissances peut intercepter ces informations lors de leur transmission. En utilisant OneTimeAtixit comme intermédiaire, vous pouvez transférer ces données en toute sécurité à votre destinataire. De cette manière, vous pouvez garantir la confidentialité et l'intégrité de vos informations sensibles.</p>                    </div>
                 </div>
                 <div class="flex justify-between mb-8 items-start">
                     <div class="w-full pr-10">
