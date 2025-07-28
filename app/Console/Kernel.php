@@ -10,9 +10,12 @@ class Kernel extends ConsoleKernel
     /**
      * Define the application's command schedule.
      */
-    protected function schedule(Schedule $schedule): void
+    protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        // Nettoyer les messages expirés tous les jours à 2h du matin
+        $schedule->command('messages:clean-expired')
+            ->daily()
+            ->at('02:00');
     }
 
     /**
