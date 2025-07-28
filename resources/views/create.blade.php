@@ -24,7 +24,35 @@
         font-family: 'Courier New', monospace;
     }
 
-    /* Styles pour les sliders */
+    /* Styles pour la barre de qualité du mot de passe */
+    .password-strength-container {
+        margin: 20px 0;
+        padding: 15px;
+        background: #f8fafc;
+        border-radius: 8px;
+        border: 1px solid #e2e8f0;
+    }
+
+    .password-strength-bar {
+        width: 100%;
+        height: 12px;
+        background: #e2e8f0;
+        border-radius: 6px;
+        overflow: hidden;
+        margin: 8px 0;
+    }
+
+    .password-strength-fill {
+        height: 100%;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+    }
+
+    .strength-very-weak { background: linear-gradient(90deg, #ef4444, #dc2626); }
+    .strength-weak { background: linear-gradient(90deg, #f97316, #ea580c); }
+    .strength-medium { background: linear-gradient(90deg, #eab308, #ca8a04); }
+    .strength-strong { background: linear-gradient(90deg, #22c55e, #16a34a); }
+    .strength-very-strong { background: linear-gradient(90deg, #059669, #047857); }
     .slider-container {
         margin-bottom: 1rem;
     }
@@ -161,9 +189,9 @@
                                     <label class="block text-sm font-medium mb-2">
                                         Nombre de caractères : <span class="slider-value" id="lengthValue">14</span>
                                     </label>
-                                    <input type="range" id="passwordLength" class="slider" min="1" max="32" value="14" step="1">
+                                    <input type="range" id="passwordLength" class="slider" min="1" max="300" value="14" step="1">
                                     <div class="mt-2">
-                                        <input type="number" id="passwordLengthInput" class="w-20 px-2 py-1 border rounded text-sm text-center" min="1" max="32" value="14" placeholder="14">
+                                        <input type="number" id="passwordLengthInput" class="w-20 px-2 py-1 border rounded text-sm text-center" min="1" max="300" value="14" placeholder="14">
                                         <span class="text-xs text-gray-500 ml-2">Saisie manuelle</span>
                                     </div>
                                 </div>
@@ -179,6 +207,20 @@
                                         <span class="text-xs text-gray-500 ml-2">Saisie manuelle</span>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+
+                        <!-- Barre de qualité du mot de passe -->
+                        <div id="passwordStrengthContainer" class="password-strength-container">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-sm font-medium">Qualité du mot de passe :</span>
+                                <span id="strengthText" class="text-sm font-semibold">Moyen</span>
+                            </div>
+                            <div class="password-strength-bar">
+                                <div id="strengthBar" class="password-strength-fill strength-medium" style="width: 60%;"></div>
+                            </div>
+                            <div class="text-xs text-gray-600 mt-2">
+                                <span id="strengthDetails">Basé sur : longueur, types de caractères et options sélectionnées</span>
                             </div>
                         </div>
 
@@ -208,6 +250,7 @@
             const value = this.value;
             document.getElementById('lengthValue').textContent = value;
             document.getElementById('passwordLengthInput').value = value;
+            updatePasswordStrength(); // Mise à jour de la barre de qualité
         });
 
         document.getElementById('passwordCount').addEventListener('input', function() {
@@ -216,18 +259,24 @@
             document.getElementById('passwordCountInput').value = value;
         });
 
+        // Mise à jour de la qualité quand les checkboxes changent
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', updatePasswordStrength);
+        });
+
         // Synchronisation des champs manuels avec les sliders
         document.getElementById('passwordLengthInput').addEventListener('input', function() {
             let value = parseInt(this.value);
 
             // Validation des limites
             if (value < 1) value = 1;
-            if (value > 32) value = 32;
+            if (value > 300) value = 300;
             if (isNaN(value)) value = 14;
 
             this.value = value;
             document.getElementById('passwordLength').value = value;
             document.getElementById('lengthValue').textContent = value;
+            updatePasswordStrength(); // Mise à jour de la barre de qualité
         });
 
         document.getElementById('passwordCountInput').addEventListener('input', function() {
@@ -242,6 +291,99 @@
             document.getElementById('passwordCount').value = value;
             document.getElementById('countValue').textContent = value;
         });
+
+        // Fonction de calcul de la qualité du mot de passe
+        function updatePasswordStrength() {
+            const length = parseInt(document.getElementById('passwordLength').value);
+            const includeNumbers = document.getElementById('includeNumbers').checked;
+            const includeLowercase = document.getElementById('includeLowercase').checked;
+            const includeUppercase = document.getElementById('includeUppercase').checked;
+            const includeSpecial = document.getElementById('includeSpecial').checked;
+            const excludeSimilar = document.getElementById('excludeSimilar').checked;
+
+            let score = 0;
+            let details = [];
+
+            // La longueur est le critère le PLUS IMPORTANT
+            if (length < 4) {
+                // Mot de passe très court = toujours très faible
+                score = Math.min(15, length * 3);
+            } else if (length < 6) {
+                score = 20;
+            } else if (length < 8) {
+                score = 30;
+            } else if (length < 12) {
+                score = 45;
+            } else if (length < 16) {
+                score = 60;
+            } else if (length < 20) {
+                score = 75;
+            } else {
+                score = 85; // Base pour les mots de passe longs
+            }
+
+            // Points pour les types de caractères (moins importants)
+            let charTypes = 0;
+            if (includeNumbers) { charTypes++; details.push('chiffres'); }
+            if (includeLowercase) { charTypes++; details.push('minuscules'); }
+            if (includeUppercase) { charTypes++; details.push('majuscules'); }
+            if (includeSpecial) { charTypes++; details.push('spéciaux'); }
+
+            // Bonus modéré pour la diversité des caractères
+            if (charTypes >= 2) score += 5;
+            if (charTypes >= 3) score += 5;
+            if (charTypes >= 4) score += 5;
+
+            // Petit bonus pour exclusion des caractères similaires
+            if (excludeSimilar) score += 3;
+
+            // Bonus pour longueur exceptionnelle
+            if (length >= 25) score += 5;
+            if (length >= 50) score += 5;
+
+            // PÉNALITÉS pour mots de passe trop courts
+            if (length < 6 && charTypes >= 3) {
+                score = Math.min(score, 25); // Même avec tous les types, max 25% si < 6 chars
+            }
+            if (length < 4) {
+                score = Math.min(score, 15); // Max 15% si < 4 chars
+            }
+
+            // Limite le score à 100
+            score = Math.min(100, Math.max(0, score));
+
+            // Détermine le niveau de sécurité avec des seuils plus stricts
+            let strengthText, strengthClass;
+            if (score >= 85) {
+                strengthText = 'Très Fort';
+                strengthClass = 'strength-very-strong';
+            } else if (score >= 65) {
+                strengthText = 'Fort';
+                strengthClass = 'strength-strong';
+            } else if (score >= 45) {
+                strengthText = 'Moyen';
+                strengthClass = 'strength-medium';
+            } else if (score >= 25) {
+                strengthText = 'Faible';
+                strengthClass = 'strength-weak';
+            } else {
+                strengthText = 'Très Faible';
+                strengthClass = 'strength-very-weak';
+            }
+
+            // Met à jour l'interface
+            const strengthBar = document.getElementById('strengthBar');
+            const strengthTextEl = document.getElementById('strengthText');
+            const strengthDetailsEl = document.getElementById('strengthDetails');
+
+            strengthBar.style.width = score + '%';
+            strengthBar.className = 'password-strength-fill ' + strengthClass;
+            strengthTextEl.textContent = strengthText;
+            strengthDetailsEl.textContent = `${length} caractères avec : ${details.join(', ')}${excludeSimilar ? ' (sans caractères similaires)' : ''}`;
+        }
+
+        // Initialise la barre de qualité au chargement
+        updatePasswordStrength();
 
         document.getElementById('generatePasswordBtn').addEventListener('click', function() {
             generateCustomPasswords();
