@@ -23,6 +23,67 @@
     #generatedPasswords input {
         font-family: 'Courier New', monospace;
     }
+
+    /* Styles pour les sliders */
+    .slider-container {
+        margin-bottom: 1rem;
+    }
+
+    .slider {
+        -webkit-appearance: none;
+        width: 100%;
+        height: 8px;
+        border-radius: 5px;
+        background: #e5e7eb;
+        outline: none;
+        opacity: 0.7;
+        transition: opacity 0.2s;
+    }
+
+    .slider:hover {
+        opacity: 1;
+    }
+
+    .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #3b82f6;
+        cursor: pointer;
+    }
+
+    .slider::-moz-range-thumb {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #3b82f6;
+        cursor: pointer;
+        border: none;
+    }
+
+    .slider-value {
+        display: inline-block;
+        min-width: 30px;
+        text-align: center;
+        font-weight: bold;
+        color: #3b82f6;
+    }
+
+    .security-notice {
+        background-color: #fef3c7;
+        border-left: 4px solid #f59e0b;
+        padding: 12px 16px;
+        margin-bottom: 20px;
+        border-radius: 4px;
+    }
+
+    .security-notice p {
+        margin: 0;
+        color: #92400e;
+        font-size: 14px;
+    }
 </style>
 
 @section('content')
@@ -35,9 +96,15 @@
                     <div class="w-full pr-10">
                         <h2 class="text-lg font-semibold mb-2">Description</h2>
 
-                        <p class="text-sm text-gray-600">Si vous devez envoyer un mot de passe ou toute autre forme d'informations simples mais sensibles à quelqu'un, vous ne pouvez pas l'envoyer par messagerie instantanée ou par courrier électronique. Ces méthodes ne sont pas sécurisées car toute personne ayant peu de connaissances peut intercepter ces informations lors de leur transmission. En utilisant OneTimeAtixit comme intermédiaire, vous pouvez transférer ces données en toute sécurité à votre destinataire. De cette manière, vous pouvez garantir la confidentialité et l'intégrité de vos informations sensibles.</p>                    </div>
+                        <p class="text-sm text-gray-600">Si vous devez envoyer un mot de passe ou toute autre forme d'informations simples mais sensibles à quelqu'un, vous ne pouvez pas l'envoyer par messagerie instantanée ou par courrier électronique. Ces méthodes ne sont pas sécurisées car toute personne ayant peu de connaissances peut intercepter ces informations lors de leur transmission. En utilisant OneTimeAtixit comme intermédiaire, vous pouvez transférer ces données en toute sécurité à votre destinataire. De cette manière, vous pouvez garantir la confidentialité et l'intégrité de vos informations sensibles.</p>
+
+                        <!-- Nouvelle section de sécurité -->
+                        <div class="security-notice mt-4">
+                            <p><strong>🔒 Sécurité :</strong> Par mesure de sécurité, votre lien généré sera automatiquement supprimé de nos serveurs au bout d'une semaine, garantissant ainsi qu'aucune trace de vos informations sensibles ne subsiste au-delà de cette période.</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="flex justify-between mb-8 items-start">
+                <div class="flex justify-between mb-4 items-start">
                     <div class="w-full pr-10">
                         <h2 class="text-lg font-semibold mb-2">Étapes</h2>
                         <ol class="list-decimal text-sm text-gray-600 list-inside">
@@ -89,29 +156,28 @@
                             </div>
 
                             <div>
-                                <div class="mb-4">
-                                    <label class="block text-sm font-medium mb-2">Nombre de caractères</label>
-                                    <select id="passwordLength" class="w-full border rounded px-3 py-2">
-                                        <option value="8">8</option>
-                                        <option value="10">10</option>
-                                        <option value="12">12</option>
-                                        <option value="14" selected>14</option>
-                                        <option value="16">16</option>
-                                        <option value="20">20</option>
-                                        <option value="24">24</option>
-                                        <option value="32">32</option>
-                                    </select>
+                                <!-- Slider pour le nombre de caractères -->
+                                <div class="slider-container">
+                                    <label class="block text-sm font-medium mb-2">
+                                        Nombre de caractères : <span class="slider-value" id="lengthValue">14</span>
+                                    </label>
+                                    <input type="range" id="passwordLength" class="slider" min="1" max="32" value="14" step="1">
+                                    <div class="mt-2">
+                                        <input type="number" id="passwordLengthInput" class="w-20 px-2 py-1 border rounded text-sm text-center" min="1" max="32" value="14" placeholder="14">
+                                        <span class="text-xs text-gray-500 ml-2">Saisie manuelle</span>
+                                    </div>
                                 </div>
 
-                                <div class="mb-4">
-                                    <label class="block text-sm font-medium mb-2">Nombre de mots de passe</label>
-                                    <select id="passwordCount" class="w-full border rounded px-3 py-2">
-                                        <option value="1" selected>1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="5">5</option>
-                                        <option value="10">10</option>
-                                    </select>
+                                <!-- Slider pour le nombre de mots de passe -->
+                                <div class="slider-container">
+                                    <label class="block text-sm font-medium mb-2">
+                                        Nombre de mots de passe : <span class="slider-value" id="countValue">1</span>
+                                    </label>
+                                    <input type="range" id="passwordCount" class="slider" min="1" max="20" value="1" step="1">
+                                    <div class="mt-2">
+                                        <input type="number" id="passwordCountInput" class="w-20 px-2 py-1 border rounded text-sm text-center" min="1" max="20" value="1" placeholder="1">
+                                        <span class="text-xs text-gray-500 ml-2">Saisie manuelle</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -137,6 +203,46 @@
     </footer>
 
     <script>
+        // Mise à jour des valeurs des sliders et synchronisation avec les champs manuels
+        document.getElementById('passwordLength').addEventListener('input', function() {
+            const value = this.value;
+            document.getElementById('lengthValue').textContent = value;
+            document.getElementById('passwordLengthInput').value = value;
+        });
+
+        document.getElementById('passwordCount').addEventListener('input', function() {
+            const value = this.value;
+            document.getElementById('countValue').textContent = value;
+            document.getElementById('passwordCountInput').value = value;
+        });
+
+        // Synchronisation des champs manuels avec les sliders
+        document.getElementById('passwordLengthInput').addEventListener('input', function() {
+            let value = parseInt(this.value);
+
+            // Validation des limites
+            if (value < 1) value = 1;
+            if (value > 32) value = 32;
+            if (isNaN(value)) value = 14;
+
+            this.value = value;
+            document.getElementById('passwordLength').value = value;
+            document.getElementById('lengthValue').textContent = value;
+        });
+
+        document.getElementById('passwordCountInput').addEventListener('input', function() {
+            let value = parseInt(this.value);
+
+            // Validation des limites
+            if (value < 1) value = 1;
+            if (value > 20) value = 20;
+            if (isNaN(value)) value = 1;
+
+            this.value = value;
+            document.getElementById('passwordCount').value = value;
+            document.getElementById('countValue').textContent = value;
+        });
+
         document.getElementById('generatePasswordBtn').addEventListener('click', function() {
             generateCustomPasswords();
         });
@@ -205,7 +311,7 @@
             <button type="button" class="bg-blue-500 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm" onclick="copyPassword(${index})">
                 Copier
             </button>
-            <button type="button" class="bg-blue-500 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm" onclick="usePassword(${index})">
+            <button type="button" class="bg-green-500 hover:bg-green-700 text-white px-3 py-1 rounded text-sm" onclick="usePassword(${index})">
                 Utiliser
             </button>
         `;
@@ -260,4 +366,3 @@
     </body>
 
 @endsection
-
